@@ -1,0 +1,70 @@
+/**
+ * Componente reutilizável de botão flutuante do WhatsApp.
+ *
+ * Os valores de posição usam variáveis CSS para que o projeto consumidor possa
+ * acomodar minicart, barras móveis e safe areas sem editar o componente.
+ */
+
+.component-whatsapp-fab {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    position: fixed;
+    right: var(--component-whatsapp-right, 18px);
+    bottom: var(--component-whatsapp-bottom, 88px);
+    z-index: var(--component-whatsapp-z-index, 910);
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--component-whatsapp-color, #128C3C);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.component-whatsapp-fab:hover {
+    background: var(--component-whatsapp-color, #128C3C);
+    filter: brightness(0.9);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.component-whatsapp-fab:focus-visible {
+    outline: 3px solid var(--component-whatsapp-focus, #8b5e3c);
+    outline-offset: 3px;
+}
+
+.component-whatsapp-fab img {
+    display: block;
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+}
+
+.component-whatsapp-fab__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+html[data-theme='dark'] .component-whatsapp-fab {
+    background: var(--component-whatsapp-color, #128C3C);
+    color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .component-whatsapp-fab {
+        transition: none;
+    }
+}
