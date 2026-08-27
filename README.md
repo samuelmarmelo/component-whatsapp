@@ -3,6 +3,8 @@
 Componente reutilizável de botão flutuante do WhatsApp para projetos WordPress. A implementação foi extraída do widget global usado no tema [Studio Alma do Lar](https://github.com/marketingwebsam/studioalmadolar) e não depende de WooCommerce, JavaScript, API externa ou plugin de terceiros.
 
 > O projeto consumidor fornece o número em formato internacional e chama `component_whatsapp_register()` uma vez. O componente registra o CSS e renderiza o botão no `wp_footer`.
+>
+> O repositório também oferece o componente irmão visual de Instagram. Ele é carregado separadamente por `component-instagram.php` e não altera nem substitui o widget do WhatsApp.
 
 ## Conteúdo
 
@@ -12,6 +14,9 @@ Componente reutilizável de botão flutuante do WhatsApp para projetos WordPress
 | `templates/whatsapp-floating.php` | Markup acessível do botão, com `target="_blank"` e `rel="noopener noreferrer"`. |
 | `assets/whatsapp.css` | Layout, posicionamento fixo, estados de foco/hover, tema escuro e redução de movimento. |
 | `assets/whatsapp.svg` | Ícone branco autohospedado usado pelo botão. |
+| `component-instagram.php` | API pública, validação do link HTTPS do Instagram, enqueue do CSS e hook de renderização do widget visual. |
+| `templates/instagram-floating.php` | Markup acessível do FAB de Instagram, com ícone SVG inline, `target="_blank"` e `rel="noopener noreferrer"`. |
+| `assets/instagram.css` | Gradiente, layout, posicionamento fixo, estados de foco/hover, tema escuro e redução de movimento do Instagram. |
 
 ## Instalação como plugin
 
@@ -92,6 +97,61 @@ Para uma barra de compra fixa em páginas de produto, o projeto consumidor pode 
 | `component_whatsapp_asset_url( $relative_path )` | Resolve a URL pública de um asset conforme `base_url`. |
 
 O componente também disponibiliza os filtros `component_whatsapp_number` e `component_whatsapp_button_color`. Não há JavaScript obrigatório: o comportamento é um link HTTPS para a conversa do WhatsApp.
+
+## Componente Instagram visual
+
+O widget de Instagram é uma adição independente e somente visual. Ele mantém a mesma ergonomia do FAB de origem — botão circular de `52px`, ícone de `30px`, posição fixa, foco visível, suporte a safe area móvel e `prefers-reduced-motion` — mas não copia telefone, mensagem, API, tracking ou lógica específica do WhatsApp.
+
+Carregue o arquivo ao lado do componente original e registre o widget com o endereço oficial da comunidade:
+
+```php
+require_once WP_CONTENT_DIR . '/plugins/component-whatsapp/component-instagram.php';
+
+component_instagram_register(
+    array(
+        'url'      => 'https://instagram.com/nitgaymers',
+        'base_url' => WP_CONTENT_URL . '/plugins/component-whatsapp',
+    )
+);
+```
+
+Quando o arquivo estiver dentro de um tema, informe a URL pública do diretório compartilhado:
+
+```php
+require_once get_template_directory() . '/components/whatsapp/component-instagram.php';
+
+component_instagram_register(
+    array(
+        'url'      => 'https://instagram.com/nitgaymers',
+        'base_url' => get_template_directory_uri() . '/components/whatsapp',
+    )
+);
+```
+
+A API pública adicional é:
+
+| Função | Uso |
+|---|---|
+| `component_instagram_register( $args )` | Registra hooks e configura o widget. É idempotente. |
+| `component_instagram_get_url( $url )` | Retorna um link HTTPS sanitizado do Instagram ou uma string vazia. |
+| `component_instagram_sanitize_url( $value )` | Aceita somente `https://instagram.com` ou `https://www.instagram.com`. |
+| `component_instagram_render_floating( $args )` | Renderiza manualmente o FAB, caso o projeto não use `wp_footer`. |
+| `component_instagram_asset_url( $relative_path )` | Resolve a URL pública de um asset conforme `base_url`. |
+
+O componente rejeita esquemas que não sejam HTTPS e hosts que não pertençam ao Instagram. O markup usa `target="_blank"`, `rel="noopener noreferrer"`, rótulo acessível visualmente oculto e ícone SVG inline autohospedado. A única navegação externa é o link configurado para o perfil do Instagram.
+
+As variáveis CSS permitem ajustar sua posição sem editar o arquivo do componente:
+
+```css
+:root {
+    --component-instagram-right: 18px;
+    --component-instagram-bottom: 88px;
+    --component-instagram-z-index: 910;
+    --component-instagram-focus: #8b5e3c;
+}
+```
+
+Para renderizar os dois widgets, registre `component_whatsapp_register()` e `component_instagram_register()` separadamente. Os arquivos, classes CSS, configurações e hooks são independentes; o componente original do WhatsApp continua preservado.
 
 ## Comportamento preservado
 

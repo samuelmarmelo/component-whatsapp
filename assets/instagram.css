@@ -1,0 +1,71 @@
+/**
+ * Componente reutilizável de botão flutuante visual do Instagram.
+ * Não depende de JavaScript, tracking, API ou asset externo.
+ */
+.component-instagram-fab {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    right: var(--component-instagram-right, 18px);
+    bottom: calc(var(--component-instagram-bottom, 88px) + env(safe-area-inset-bottom));
+    z-index: var(--component-instagram-z-index, 910);
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #833ab4 0%, #c13584 42%, #e1306c 68%, #f77737 100%);
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 10px 28px rgb(193 53 132 / 35%);
+    transition: filter 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.component-instagram-fab:hover {
+    color: #fff;
+    filter: brightness(0.92);
+    transform: translateY(-1px);
+    box-shadow: 0 14px 34px rgb(193 53 132 / 45%);
+}
+
+.component-instagram-fab:focus-visible {
+    outline: 3px solid var(--component-instagram-focus, #8b5e3c);
+    outline-offset: 3px;
+}
+
+.component-instagram-fab__icon {
+    display: block;
+    width: 30px;
+    height: 30px;
+}
+
+.component-instagram-fab__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+html[data-theme='dark'] .component-instagram-fab {
+    color: #fff;
+}
+
+@media (max-width: 782px) {
+    .component-instagram-fab {
+        right: 1.5rem;
+        bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .component-instagram-fab {
+        transition: none;
+    }
+}

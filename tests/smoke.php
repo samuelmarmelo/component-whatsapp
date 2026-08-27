@@ -71,11 +71,19 @@ function wp_add_inline_style( string $handle, string $data ): void {
 }
 
 require dirname( __DIR__ ) . '/component-whatsapp.php';
+require dirname( __DIR__ ) . '/component-instagram.php';
 
 component_whatsapp_register(
     array(
         'number'   => '+55 (21) 98849-1364',
         'message'  => 'Olá, teste & confirmação',
+        'base_url' => 'https://example.test/component-whatsapp',
+    )
+);
+
+component_instagram_register(
+    array(
+        'url'      => 'https://instagram.com/nitgaymers',
         'base_url' => 'https://example.test/component-whatsapp',
     )
 );
@@ -96,6 +104,28 @@ $markup = (string) ob_get_clean();
 foreach ( array( 'component-whatsapp-fab', 'https://wa.me/5521988491364', 'target="_blank"', 'rel="noopener noreferrer"' ) as $expected ) {
     if ( false === strpos( $markup, $expected ) ) {
         throw new RuntimeException( 'O markup renderizado não contém: ' . $expected );
+    }
+}
+
+if ( 'https://instagram.com/nitgaymers' !== component_instagram_get_url() ) {
+    throw new RuntimeException( 'A URL padrão do Instagram não foi preservada.' );
+}
+
+if ( '' !== component_instagram_sanitize_url( 'http://instagram.com/nitgaymers' ) ) {
+    throw new RuntimeException( 'O componente aceitou uma URL do Instagram sem HTTPS.' );
+}
+
+if ( 'https://example.test/component-whatsapp/assets/instagram.css' !== component_instagram_asset_url( 'assets/instagram.css' ) ) {
+    throw new RuntimeException( 'A URL pública do CSS do Instagram não respeita base_url.' );
+}
+
+ob_start();
+component_instagram_render_floating();
+$instagram_markup = (string) ob_get_clean();
+
+foreach ( array( 'component-instagram-fab', 'component-instagram-fab__icon', 'https://instagram.com/nitgaymers', 'target="_blank"', 'rel="noopener noreferrer"', 'aria-label="Seguir a comunidade Nitgaymers no Instagram"' ) as $expected ) {
+    if ( false === strpos( $instagram_markup, $expected ) ) {
+        throw new RuntimeException( 'O markup do Instagram não contém: ' . $expected );
     }
 }
 
