@@ -14,6 +14,9 @@ Componente reutilizável de botão flutuante do WhatsApp para projetos WordPress
 | `templates/whatsapp-floating.php` | Markup acessível do botão, com `target="_blank"` e `rel="noopener noreferrer"`. |
 | `assets/whatsapp.css` | Layout, posicionamento fixo, estados de foco/hover, tema escuro e redução de movimento. |
 | `assets/whatsapp.svg` | Ícone branco autohospedado usado pelo botão. |
+| `component-whatsapp-unidades.php` | Variante com várias unidades: botão que abre a janela de seleção (ver seção própria). |
+| `templates/whatsapp-unidades.php` | Markup acessível do botão e da janela de unidades. |
+| `assets/whatsapp-unidades.css` / `.js` | Estilo e comportamento da janela (sem dependências, sem inline). |
 | `component-instagram.php` | API pública, validação do link HTTPS do Instagram, enqueue do CSS e hook de renderização do widget visual. |
 | `templates/instagram-floating.php` | Markup acessível do FAB de Instagram, com ícone SVG inline, `target="_blank"` e `rel="noopener noreferrer"`. |
 | `assets/instagram.css` | Gradiente, layout, posicionamento fixo, estados de foco/hover, tema escuro e redução de movimento do Instagram. |
@@ -152,6 +155,60 @@ As variáveis CSS permitem ajustar sua posição sem editar o arquivo do compone
 ```
 
 Para renderizar os dois widgets, registre `component_whatsapp_register()` e `component_instagram_register()` separadamente. Os arquivos, classes CSS, configurações e hooks são independentes; o componente original do WhatsApp continua preservado.
+
+## Componente WhatsApp com várias unidades
+
+Variante para quem atende por várias unidades ou setores, no lugar do recurso de "várias contas" do plugin WP Chat App: o botão flutuante abre uma janela para a pessoa escolher com quem falar, e cada unidade abre o próprio link `wa.me`. É um componente irmão e independente (`component-whatsapp-unidades.php`, classes `cwu__*`); o botão simples continua igual.
+
+```php
+require_once WP_CONTENT_DIR . '/plugins/component-whatsapp/component-whatsapp-unidades.php';
+
+component_whatsapp_unidades_register(
+    array(
+        'title'       => 'Selecione a unidade',
+        'description' => 'Escolha com qual unidade quer conversar.',
+        'label'       => 'Mande uma mensagem no WhatsApp',
+        'message'     => '',               // mensagem inicial padrão (opcional)
+        'base_url'    => WP_CONTENT_URL . '/plugins/component-whatsapp',
+        'accounts'    => array(
+            array( 'name' => 'Unidade Centro', 'number' => '+55 (11) 90000-0001', 'detail' => 'Segunda a sexta, de 8h às 18h' ),
+            array( 'name' => 'Unidade Norte',  'url'    => 'https://wa.me/5511900000002' ),
+        ),
+    )
+);
+```
+
+Comportamento:
+
+- Duas ou mais unidades válidas: o botão abre a janela (diálogo acessível: `aria-haspopup`, `aria-expanded`, foco vai para a primeira unidade, Tab fica preso na janela, Esc, botão Fechar e clique fora fecham e devolvem o foco).
+- Uma unidade só: o botão vira link direto, sem janela.
+- Nenhuma unidade válida e sem `fallback_number`: nada é renderizado (SafeWidget).
+- Sem JavaScript: o botão é um link para a primeira unidade (ou `fallback_number`).
+- Unidade aceita `number` (normalizado para dígitos) ou `url` (`https://wa.me/...` ou `https://api.whatsapp.com/...`); outros links são descartados.
+- Sem estilo nem script inline (compatível com CSP estrita). Assets: `assets/whatsapp-unidades.css` e `assets/whatsapp-unidades.js` (sem dependências).
+
+Ajustes visuais por variáveis CSS, sem editar o componente:
+
+```css
+.cwu {
+    --cwu-cor: #2db742;
+    --cwu-cor-texto: #fff;
+    --cwu-right: 20px;
+    --cwu-bottom: 30px;
+    --cwu-z-index: 910;
+    --cwu-raio: 16px;
+    --cwu-foco: #004aad;
+}
+```
+
+| Função | Uso |
+|---|---|
+| `component_whatsapp_unidades_register( $args )` | Registra hooks e configura o componente. É idempotente. |
+| `component_whatsapp_unidades_render( $args )` | Renderiza manualmente (sem o hook `wp_footer`). |
+| `component_whatsapp_unidades_normalize_accounts( $accounts, $message )` | Devolve só as unidades válidas (`name`, `detail`, `url`). |
+| `component_whatsapp_unidades_get_url( $number, $message )` | Link `wa.me` sanitizado ou string vazia. |
+
+Exemplo sem WordPress: `exemplos/whatsapp-unidades.html` (números fictícios). Origem: tema Loghus Pré-Vestibular (v0.2.0), que reproduziu o seletor de unidades do WP Chat App.
 
 ## Comportamento preservado
 

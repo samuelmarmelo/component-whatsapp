@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exemplo: WhatsApp com várias unidades</title>
+<!--
+  Demonstração sem WordPress: o mesmo markup que templates/whatsapp-unidades.php
+  gera, com dados de exemplo (números fictícios). Abra no navegador e clique
+  no botão verde.
+-->
+<link rel="stylesheet" href="../assets/whatsapp-unidades.css">
+<script src="../assets/whatsapp-unidades.js" defer></script>
+</head>
+<body>
+<main>
+    <h1>Exemplo do componente</h1>
+    <p>Clique no botão verde no canto inferior direito.</p>
+</main>
+
+<div class="cwu" data-cwu>
+    <a class="cwu__botao" href="https://wa.me/5511900000001" target="_blank" rel="noopener noreferrer" data-cwu-abrir aria-haspopup="dialog" aria-controls="cwu-janela" aria-expanded="false">
+        <img class="cwu__icone" src="../assets/whatsapp.svg" alt="" width="28" height="28" aria-hidden="true">
+        <span class="cwu__rotulo">Mande uma mensagem no WhatsApp</span>
+    </a>
+    <div class="cwu__janela" id="cwu-janela" role="dialog" aria-modal="true" aria-labelledby="cwu-titulo" hidden>
+        <div class="cwu__topo">
+            <div class="cwu__textos">
+                <p class="cwu__titulo" id="cwu-titulo">Selecione a unidade</p>
+                <p class="cwu__descricao">Escolha com qual unidade quer conversar.</p>
+            </div>
+            <button type="button" class="cwu__fechar" data-cwu-fechar aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <ul class="cwu__lista">
+            <li>
+                <a class="cwu__unidade" href="https://wa.me/5511900000001" target="_blank" rel="noopener noreferrer" data-cwu-unidade>
+                    <span class="cwu__avatar" aria-hidden="true"><img src="../assets/whatsapp.svg" alt="" width="22" height="22"></span>
+                    <span class="cwu__info"><span class="cwu__nome">Unidade Centro</span><span class="cwu__detalhe">Segunda a sexta, de 8h às 18h</span></span>
+                </a>
+            </li>
+            <li>
+                <a class="cwu__unidade" href="https://wa.me/5511900000002" target="_blank" rel="noopener noreferrer" data-cwu-unidade>
+                    <span class="cwu__avatar" aria-hidden="true"><img src="../assets/whatsapp.svg" alt="" width="22" height="22"></span>
+                    <span class="cwu__info"><span class="cwu__nome">Unidade Norte</span><span class="cwu__detalhe">Segunda a sábado, de 9h às 17h</span></span>
+                </a>
+            </li>
+            <li>
+                <a class="cwu__unidade" href="https://wa.me/5511900000003" target="_blank" rel="noopener noreferrer" data-cwu-unidade>
+                    <span class="cwu__avatar" aria-hidden="true"><img src="../assets/whatsapp.svg" alt="" width="22" height="22"></span>
+                    <span class="cwu__info"><span class="cwu__nome">Atendimento on-line</span><span class="cwu__detalhe">Todos os dias</span></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

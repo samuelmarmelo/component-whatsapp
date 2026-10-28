@@ -70,8 +70,12 @@ function wp_enqueue_style( string $handle, string $src, array $deps, string $ver
 function wp_add_inline_style( string $handle, string $data ): void {
 }
 
+function wp_enqueue_script( string $handle, string $src, array $deps, string $version, bool $in_footer = false ): void {
+}
+
 require dirname( __DIR__ ) . '/component-whatsapp.php';
 require dirname( __DIR__ ) . '/component-instagram.php';
+require dirname( __DIR__ ) . '/component-whatsapp-unidades.php';
 
 component_whatsapp_register(
     array(

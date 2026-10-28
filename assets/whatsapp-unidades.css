@@ -1,0 +1,212 @@
+/**
+ * Componente WhatsApp com várias unidades.
+ *
+ * Ajuste sem editar o arquivo, pelas variáveis:
+ *   --cwu-cor, --cwu-cor-texto, --cwu-right, --cwu-bottom, --cwu-z-index,
+ *   --cwu-raio, --cwu-foco, --cwu-fonte.
+ */
+
+.cwu {
+    --cwu-cor: #2db742;
+    --cwu-cor-texto: #fff;
+    font-family: var(--cwu-fonte, inherit);
+}
+
+.cwu__botao {
+    box-sizing: border-box;
+    position: fixed;
+    right: var(--cwu-right, 20px);
+    bottom: var(--cwu-bottom, 30px);
+    z-index: var(--cwu-z-index, 910);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px 10px 12px;
+    border-radius: 40px;
+    background: var(--cwu-cor);
+    color: var(--cwu-cor-texto);
+    font-size: 14px;
+    line-height: 1.3;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .18);
+    transition: filter .2s ease, transform .2s ease;
+}
+
+.cwu__botao:hover {
+    color: var(--cwu-cor-texto);
+    filter: brightness(1.06);
+    transform: translateY(-2px);
+}
+
+.cwu__icone {
+    display: block;
+    width: 28px;
+    height: 28px;
+}
+
+.cwu__janela {
+    box-sizing: border-box;
+    position: fixed;
+    right: var(--cwu-right, 20px);
+    bottom: calc(var(--cwu-bottom, 30px) + 66px);
+    z-index: calc(var(--cwu-z-index, 910) + 2);
+    display: flex;
+    flex-direction: column;
+    width: 360px;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 130px);
+    overflow: hidden;
+    border-radius: var(--cwu-raio, 16px);
+    background: #fff;
+    color: #2e2e2e;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .22);
+}
+
+.cwu__janela[hidden] {
+    display: none;
+}
+
+.cwu__topo {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 16px 18px 18px;
+    background: var(--cwu-cor);
+    color: var(--cwu-cor-texto);
+}
+
+.cwu__textos {
+    flex: 1;
+    min-width: 0;
+}
+
+.cwu__titulo {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.cwu__descricao {
+    margin: 6px 0 0;
+    font-size: 13px;
+    line-height: 1.45;
+    text-wrap: pretty;
+}
+
+.cwu__fechar {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    margin: -4px -4px 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.cwu__fechar:hover {
+    background: rgba(255, 255, 255, .16);
+}
+
+.cwu__lista {
+    margin: 0;
+    padding: 8px;
+    list-style: none;
+    overflow-y: auto;
+}
+
+.cwu__unidade {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-left: 3px solid transparent;
+    border-radius: 10px;
+    color: inherit;
+    text-decoration: none;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+.cwu__unidade:hover,
+.cwu__unidade:focus-visible {
+    background: #f2f2f2;
+    border-left-color: var(--cwu-cor);
+    color: inherit;
+}
+
+.cwu__avatar {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--cwu-cor);
+}
+
+.cwu__info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.cwu__nome {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.cwu__detalhe {
+    color: #6b6b6b;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.cwu__botao:focus-visible,
+.cwu__fechar:focus-visible,
+.cwu__unidade:focus-visible {
+    outline: 3px solid var(--cwu-foco, #004aad);
+    outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+    .cwu__botao {
+        padding: 14px;
+    }
+
+    .cwu__rotulo {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    .cwu__janela {
+        right: 12px;
+        left: 12px;
+        width: auto;
+        max-width: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cwu__botao,
+    .cwu__unidade {
+        transition: none;
+    }
+
+    .cwu__botao:hover {
+        transform: none;
+    }
+}
